@@ -1,0 +1,6 @@
+---
+
+xdebug_max_nesting_level: 200
+
+xdebug_packages:
+    - /etc/opt/rh/rh-php56/php.d/15-xdebug.ini

@@ -1,0 +1,6 @@
+---
+
+- name: Install SCL repo.
+  yum:
+    name: "{{ system_scl_package }}"
+    state: present

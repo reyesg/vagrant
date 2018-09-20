@@ -1,0 +1,6 @@
+---
+
+- include: init.yml
+  when: blackfire_first_install == 'true'
+
+- include: install.yml

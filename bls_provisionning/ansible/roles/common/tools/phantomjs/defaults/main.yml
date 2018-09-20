@@ -1,0 +1,6 @@
+---
+phantomjs_version : 2.1.1
+fontconfig_version : 2.11.1
+phantomjs_package_name: phantomjs-{{ phantomjs_version }}-linux-x86_64
+fontconfig_package: fontconfig-{{ fontconfig_version }}.tar.bz2
+

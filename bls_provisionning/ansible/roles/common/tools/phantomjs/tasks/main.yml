@@ -1,0 +1,19 @@
+---
+- name: Install PhantomJS dependencies
+  yum: name={{ item }} state=latest
+  sudo: true
+  with_items: 
+      - fontconfig
+      - fontconfig-devel
+      - freetype
+      - freetype-devel
+
+- name: download phantomjs
+  get_url: url={{ no_rpm_repo}}/phantomjs/{{ phantomjs_package_name }}.tar.bz2 dest=/tmp/ mode=0755 validate_certs=false url_username=deployment url_password=AvA4tJL6fxBQiG force=yes
+
+- name: Unarchive phantomjs
+  unarchive: src=/tmp/{{ phantomjs_package_name }}.tar.bz2 dest=/tmp copy=no 
+
+- name: make phantomjs global
+  file: src=/tmp/{{ phantomjs_package_name }}/bin/phantomjs dest=/usr/bin/phantomjs state=link
+  sudo: true 

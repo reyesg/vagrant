@@ -1,0 +1,41 @@
+---
+- name: Create app/config/parameters.yml
+  become: yes
+  template:
+      src: parameters.yml.j2
+      dest: "{{ application_path }}/app/config/parameters.yml"
+
+- name: Ensure Apache is session directory owner
+  become: yes
+  file:
+    path: /var/lib/php/sessions
+    state: directory
+    owner: apache
+    mode: 0755
+
+# - name: Make Apache owner of cache directory
+#   become: yes
+#   file:
+#     path: "{{ application_path }}/var/cache"
+#     state: directory
+#     owner: apache
+#     mode: 0755
+
+- name: Composer update
+  shell: cd {{ application_path }} && composer update
+
+- name: Cache clear Prod && Dev
+  shell: cd {{ application_path }} && php bin/console c:c --env={{ item }}
+  chdir: "{{ application_path }}"
+  with_items:
+    - "dev"
+    - "prod"
+
+- name: Update database schema
+  shell: cd {{ application_path }} && php bin/console doctrine:schem:update -f
+
+- name: Ensure app_dev.php access from host
+  become: yes
+  template:
+      src: app_dev.php.j2
+      dest: "{{ application_path }}/web/app_dev.php"

@@ -1,0 +1,20 @@
+---
+
+- name: Ajout de la tête NAS dans le fichier host
+  lineinfile:
+    backup=yes
+    state=present
+    dest=/etc/hosts
+    regexp='(# Ansible - NAS)'
+    line='{{system_nas_ip}}    {{system_nas_name}}    '#' Ansible - NAS'
+  when: system_use_nfs_filesystem|default(false)
+
+- name: Ajout du montage NAS dans le fichier fstab
+  lineinfile:
+    backup=yes
+    state=present
+    dest=/etc/fstab
+    regexp='(# Ansible - NAS)'
+    line='{{system_nas_name}}:{{system_nas_lun}}  {{system_nas_mount_point}}  nfs4  _netdev,proto=tcp,intr,rsize=32768,wsize=32768 0 0    '#' Ansible - NAS'
+  when: system_use_nfs_filesystem|default(false)
+

@@ -1,0 +1,36 @@
+---
+- name: Mandatory Basic OS and variables  configuration
+  hosts: all
+  become: yes
+  roles:
+    - { role: common/system_setting, tags: [always, system] }
+    - { role: common/remi-rpm, tags: [always, system] }
+
+- name: Install MySQL
+  hosts: database
+  become: yes
+  roles :
+    - { role: buildingBlocks/mysql-server, tags: [database] }
+
+- name: Install Apache
+  hosts: front
+  become: yes
+  roles:
+    - { role: buildingBlocks/apache, tags: [webserver] }
+
+- name: Install Git
+  hosts: front
+  become: yes
+  roles:
+    - { role: buildingBlocks/git, tags: [webserver] }
+
+- name: Install Php & Composer
+  hosts: front
+  become: yes
+  roles:
+    - { role: buildingBlocks/php-version, tags: [webserver] }
+    - { role: buildingBlocks/php, tags: [webserver] }
+    - { role: buildingBlocks/php-mysql, tags: [webserver] }
+    - { role: buildingBlocks/apache-php-fpm, tags: [webserver]}
+    - { role: buildingBlocks/composer, tags: [webserver]}
+

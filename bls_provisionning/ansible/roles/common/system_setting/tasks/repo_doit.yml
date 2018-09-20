@@ -1,0 +1,13 @@
+---
+
+- name: Copy the DOIT repo file
+  template: src=doit.repo.j2 dest=/etc/yum.repos.d/doit.repo mode=644 owner=root group=root
+
+- name: Check if Prosodie's default repo if present
+  stat: path=/etc/yum.repos.d/prosodie.repo
+  register: prosodierepo
+
+- name: Rename the Prosodie's default repo
+  command: mv /etc/yum.repos.d/prosodie.repo /etc/yum.repos.d/prosodie.repo.bkp
+  when: prosodierepo.stat.exists
+

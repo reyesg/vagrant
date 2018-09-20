@@ -1,0 +1,38 @@
+#!/usr/bin/expect -f
+
+set timeout 2
+#match_max 60000
+
+
+set MODE [lindex $argv 0]
+set DEPLOYUSER [lindex $argv 1]
+set DEPLOYPWD [lindex $argv 2]
+set NODEIP [lindex $argv 3]
+
+if { $MODE != "install"  } {
+        puts "Usage : ./exchange_pub_key.exp <install> <deployuser> <deployuserpass> <server>"
+        exit
+}
+
+spawn -noecho ssh ${DEPLOYUSER}@${NODEIP}
+
+expect "(yes/no)?" { send -- "yes\r"; expect "password:" { send -- "${DEPLOYPWD}\r" } } \
+"password:" { send -- "${DEPLOYPWD}\r" }
+
+expect "${DEPLOYUSER}@* ~" {
+
+ send -- "mkdir /home/${DEPLOYUSER}/.ssh/\r"
+ expect ":~#"
+ send -- "chmod 700 /home/${DEPLOYUSER}/.ssh/\r"
+ expect ":~#"
+ send "exit\r"
+}
+
+spawn bash -c "scp /home/${DEPLOYUSER}/.ssh/id_rsa.pub ${DEPLOYUSER}@${NODEIP}:/home/${DEPLOYUSER}/.ssh/authorized_keys"
+expect {
+  -re ".*sword.*" {
+    send -- "${DEPLOYPWD}\r"
+  }
+}
+
+interact

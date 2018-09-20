@@ -1,0 +1,59 @@
+#!/usr/bin/expect -f
+
+set timeout 2
+#match_max 60000
+
+if { $argc != 6 } {
+        puts "$argv0 needs 6 arguments"
+        puts "Usage : ./calife_only_handler.sh <add|remove> <sshuser> <sshuserpass> <deployuser> <deployuserpass> <server>"
+        puts "Exemple : ./calife_only_handler.sh add admapp XXXX deploy XXXX V1-SVVAR-PRD41"
+        exit
+}
+
+#set MODE [lindex $argv 0]
+set MODE [lindex $argv 0]
+set SSHUSER [lindex $argv 1]
+set SSHPWD [lindex $argv 2]
+set DEPLOYUSER [lindex $argv 3]
+set DEPLOYPWD [lindex $argv 4]
+set NODEIP [lindex $argv 5]
+
+if { $MODE != "add" && $MODE != "remove" } {
+        puts "Usage : ./calife_only_handler.exp <add|remove> <sshuser> <sshuserpass> <deployuser> <deployuserpass> <server>"
+        exit
+}
+
+spawn -noecho ssh ${SSHUSER}@${NODEIP}
+
+expect "(yes/no)?" { send -- "yes\r"; expect "password:" { send -- "${SSHPWD}\r" } } \
+"password:" { send -- "${SSHPWD}\r" }
+
+expect "${SSHUSER}@* ~"
+
+send -- "calife\r"
+
+expect "password*" { send -- "${SSHPWD}\r" }
+
+if { $MODE == "add" } { 
+        expect "root@*" { 
+
+ send -- "adduser ${DEPLOYUSER}\r"
+ send -- "passwd ${DEPLOYUSER}\r" 
+ expect  "password: " 
+ send -- "${DEPLOYPWD}\r" 
+ expect  "password: "
+ send -- "${DEPLOYPWD}\r" 
+ expect ":~#"
+ send "echo ${DEPLOYUSER}  \"ALL=(ALL)\" NOPASSWD:ALL >> /etc/sudoers\n"
+ send "cat /etc/sudoers\n"
+ expect -re "sudoers\r\n(.*)\u001b]0;root@" 
+
+} 
+
+} elseif { $MODE == "remove" } { 
+        expect "root@*" {
+                send -- "userdel ${DEPLOYUSER} && sed -i \"/${DEPLOYUSER}.*NOPASSWD:ALL/d\" /etc/sudoers\r"
+                expect -re "sudoers\r\n(.*)\u001b]0;root@" {set result $expect_out "1,string" } } 
+
+puts $result
+} 

@@ -1,0 +1,6 @@
+###############################
+##    SERVER PARAM           ##
+###############################
+server:
+    timezone: Europe/Paris
+    download_path: /tmp

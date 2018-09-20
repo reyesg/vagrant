@@ -1,0 +1,61 @@
+############################################
+##                                        ##
+##     DEVELOPEMENT ENV PARAMETERS        ##
+##                                        ##
+############################################
+
+###########################
+##   SYSTEM PARAMETERS   ##
+###########################
+use_calife: false
+use_epel: true
+use_scl: true
+use_softwarecollections: true
+use_repo_doit: false
+remount_filesystems: false
+
+
+hebergement:          "local"
+vagrant:              true
+proxy_on:             false
+
+server:
+    download_path: /tmp
+
+system_timezone: "Europe/Paris"
+
+#############################
+##    App Configuration    ##
+#############################
+installApp: true
+application_path: /vagrant/sources
+
+dev_env_enable: true
+
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: bls_data
+    database_user: root
+    database_password: root
+    mailer_transport: gmail
+    mailer_host: 127.0.0.1
+    mailer_user: foo
+    mailer_password: bar
+    secret: MySecretVerySecret
+
+#############################
+##    MYSLQ Configuration  ##
+#############################
+mysql_databases:
+   - name: "{{ parameters.database_name }}"
+     collation: utf8_general_ci
+     encoding: utf8
+     replicate: 1
+
+# Users.
+#mysql_users: []
+#   - name: {{ parameters.database_user }}
+#     host: {{ parameters.database_host }}
+#     password: {{ parameters.database_password }}
+#     priv: {{ parameters.database_name }}:USAGE

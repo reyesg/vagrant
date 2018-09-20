@@ -1,0 +1,11 @@
+---
+
+- name: Install the pygpgme package used to verify GPG signatures
+  tags: blackfire
+  yum: name=pygpgme state=present
+  when: hebergement == "azure"
+
+- name: Add Blackfire repository to the configuration
+  tags: blackfire
+  shell: curl "{{ blackfire_repository }}" | sudo tee /etc/yum.repos.d/blackfire.repo
+  when: hebergement == "azure"

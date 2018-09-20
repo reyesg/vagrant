@@ -1,0 +1,25 @@
+---
+
+#- name: Remount /opt and /usr with rw
+#  mount: name={{ item }} opts=rw,remount state=mounted
+#  with_items:
+#    -  /opt
+#    -  /usr
+
+#- name: Remount /tmp and /var with exec
+#  mount: name={{ item }} opts=exec,remount state=mounted
+#  with_items:
+#    -  /tmp
+#    -  /var
+
+- name: Remount /opt with rw
+  shell: mount -o remount,rw {{ system.mountpoint_opt }}
+
+- name: Remount /usr with rw
+  shell: mount -o remount,rw,exec {{ system.mountpoint_usr }}
+
+- name: Remount /tmp with rw
+  shell: mount -o remount,rw,exec {{ system.mountpoint_tmp }}
+
+- name: Remount /var with rw
+  shell: mount -o remount,rw,exec {{ system.mountpoint_var }}

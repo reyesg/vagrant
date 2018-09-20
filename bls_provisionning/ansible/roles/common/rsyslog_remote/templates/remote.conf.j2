@@ -1,0 +1,21 @@
+$ModLoad imfile
+$template Graylog2Output,"<%PRI%>1 %timegenerated:::date-rfc3339% %HOSTNAME% %syslogtag% - %APP-NAME%: %msg:::drop-last-lf%\n"
+$ActionForwardDefaultTemplate Graylog2Output
+
+$InputFilePollInterval {{ rsyslog_InputFilePollInterval }}
+
+
+{% for log in rsyslog_logs_to_send %}
+$InputFileName {{ log.path }}
+$InputFileTag  {{ log.tag }}
+$InputFileStateFile {{ log.tag }}
+$InputFileFacility {{ rsyslog_default_log_facility }}
+$InputRunFileMonitor
+
+{% endfor %}
+
+
+{% for server in rsyslog_remote_servers %}
+{{rsyslog_default_log_facility}}.* @{{ server }}
+{% endfor %}
+

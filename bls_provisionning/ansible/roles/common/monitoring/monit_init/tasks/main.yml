@@ -1,0 +1,11 @@
+---
+
+- name: Outil de monitoring | Creation répertoire de dépôt des fichiers PHP
+  file: path={{ monitoring_directory }} state=directory owner={{ monitoring_user }} group={{ monitoring_group }}
+
+- name: Copy vhost
+  template: src=vhost.conf.j2 dest={{ apache_specific_path }}/conf.d/monitoring.conf
+
+- name: Restart apache
+  service: name=httpd24-httpd state=restarted
+

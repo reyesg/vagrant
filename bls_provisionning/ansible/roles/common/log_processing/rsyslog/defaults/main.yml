@@ -1,0 +1,5 @@
+---
+
+rsyslog_app_name: syslog_app
+rsyslog_facility: local7
+rsyslog_log_dir:  /var/log

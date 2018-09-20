@@ -1,0 +1,19 @@
+[blackfire]
+extension="/opt/rh/rh-php56/root/usr/lib64/php/modules/blackfire.so"
+
+; On Linux systems, uncomment the following line
+;blackfire.agent_socket = unix:///var/run/blackfire/agent.sock
+; On Mac OS X systems, uncomment the following line
+;blackfire.agent_socket = unix:///usr/local/var/run/blackfire-agent.sock
+
+blackfire.agent_timeout = 0.25
+
+; Log verbosity level (4: debug, 3: info, 2: warning, 1: error)
+blackfire.log_level = {{ blackfire_log_level }}
+
+; Log file (STDERR by default)
+blackfire.log_file = /tmp/blackfire.log
+
+;blackfire.server_id =
+
+;blackfire.server_token =

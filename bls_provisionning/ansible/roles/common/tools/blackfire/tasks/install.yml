@@ -1,0 +1,37 @@
+---
+
+- name: Install the blackfire-agent package
+  tags: blackfire
+  yum: name=blackfire-agent state=latest update_cache=yes
+
+- name: Create agent configuration
+  tags: blackfire
+  template:
+    src=agent.j2
+    dest={{ blackfire_directory }}/agent
+    owner=0
+    group=0
+    mode=0644
+  register: agent_configuration_state
+
+- name: Install the blackfire-probe
+  tags: blackfire
+  yum: name=blackfire-php state=latest update_cache=yes
+
+- name: Create php configuration
+  tags: blackfire
+  template:
+    src=blackfire.ini.j2
+    dest=/etc/opt/rh/rh-php56/php.d/90-blackfire.ini
+    owner=0
+    group=0
+    mode=0644
+
+- name: Service blackfire-agent restart
+  tags: blackfire
+  sudo: true
+  service: name=blackfire-agent state=restarted
+  notify:
+    - restart php-fpm
+    - restart apache
+  when: agent_configuration_state|changed

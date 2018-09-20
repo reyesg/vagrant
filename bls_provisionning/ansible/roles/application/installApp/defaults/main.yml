@@ -1,0 +1,13 @@
+application_path: #
+
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: bls_data
+    database_user: dbUser
+    database_password: dbPass
+    mailer_transport: gmail
+    mailer_host: 127.0.0.1
+    mailer_user: foo
+    mailer_password: bar
+    secret: MySecretVerySecret

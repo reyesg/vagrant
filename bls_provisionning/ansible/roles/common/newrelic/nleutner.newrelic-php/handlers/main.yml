@@ -1,0 +1,11 @@
+---
+
+- name: Restart New Relic Daemon
+  service:
+    name: newrelic-daemon
+    state: restarted
+
+- name: Restart php-fpm
+  service: 
+    name: rh-php56-php-fpm
+    state: restarted

@@ -1,0 +1,6 @@
+---
+
+- set_fact:
+    service_ip: "{{ hostvars[inventory_hostname]['ansible_' ~ gatherer_service_interface].ipv4.address }}"
+
+- debug: var=service_ip

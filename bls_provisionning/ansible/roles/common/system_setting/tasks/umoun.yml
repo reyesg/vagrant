@@ -1,0 +1,14 @@
+---
+
+- name: Remount /opt and /usr with rw
+  mount: name={{ item }} opts=ro,remount state=mounted
+  with_items:
+    -  /opt
+    -  /usr
+
+- name: Remount /tmp and /var with exec
+  mount: name={{ item }} opts=exec,remount state=mounted
+  with_items:
+    -  /tmp
+    -  /var
+

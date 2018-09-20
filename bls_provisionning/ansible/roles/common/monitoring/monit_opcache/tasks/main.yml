@@ -1,0 +1,14 @@
+---
+
+- name: Outil de monitoring | Création du répertoire de dépôt pour monitoring opcache
+  file: path={{ monitoring_directory }}/{{ monitoring_opcache_directory }} state=directory owner={{ monitoring_user }} group={{ monitoring_group }}
+
+- name: Outil de monitoring | Copy du fichier opcache.PHP
+  template: src={{ item.src }} dest={{ monitoring_directory }}/{{ monitoring_opcache_directory }}/{{ item.dest }}
+  with_items:
+    - { src: opcache.php.j2, dest: opcache.php }
+
+- name: Set group to apache on release directory
+  shell: "chown -R {{ monitoring_user }}.{{ monitoring_user }} {{ monitoring_opcache_directory }}"
+  args:
+    chdir: "{{ monitoring_directory }}/"

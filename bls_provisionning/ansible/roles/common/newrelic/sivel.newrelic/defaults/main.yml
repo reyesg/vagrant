@@ -1,0 +1,11 @@
+---
+
+newrelic_collector_host: collector.newrelic.com
+newrelic_logfile: /var/log/newrelic/nrsysmond.log
+newrelic_loglevel: info
+newrelic_pidfile: /var/run/newrelic/nrsysmond.pid
+newrelic_proxy: False
+newrelic_ssl: "false"
+newrelic_ssl_ca_bundle: False
+newrelic_ssl_ca_path: False
+newrelic_timeout: 30

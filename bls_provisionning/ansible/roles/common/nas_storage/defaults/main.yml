@@ -1,0 +1,9 @@
+---
+
+system_use_nfs_filesystem: True
+system_nas_ip: 10.31.17.250
+system_nas_name: V1-HNAS
+system_nas_lun: /FS_RSCINT/Drupal
+system_nas_mount_point: /appli/portal
+system_use_nfs_filesystem: False
+system_use_drupal_hosts: True

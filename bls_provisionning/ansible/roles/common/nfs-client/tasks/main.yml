@@ -1,0 +1,17 @@
+---
+
+- name: "install nfs"
+  yum: 
+    name: "nfs-utils"
+    state: present
+  sudo: true
+  
+- name: Start nfs services
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+      - rpcbind
+      - nfs-server
+      - nfs-lock
+      - nfs-idmap
+  sudo: true
+

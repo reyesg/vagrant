@@ -1,0 +1,16 @@
+---
+
+system_epel_repo_gpg_key_url: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+system_epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+system_timezone: Europe/Paris
+
+integration_user: integration 
+integration_password: integration
+
+system_scl_package: centos-release-scl
+
+system:
+    mountpoint_usr: /usr
+    mountpoint_opt: /opt
+    mountpoint_tmp: /tmp
+    mountpoint_var: /var

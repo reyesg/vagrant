@@ -1,0 +1,8 @@
+; {{ ansible_managed }}
+
+; Enable xdebug extension module
+zend_extension=xdebug.so
+
+; see http://xdebug.org/docs/all_settings
+
+xdebug.max_nesting_level={{ xdebug_max_nesting_level }}

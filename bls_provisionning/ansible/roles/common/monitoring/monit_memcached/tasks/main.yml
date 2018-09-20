@@ -1,0 +1,32 @@
+---
+
+- stat: path={{ monitoring_directory }}/{{ monitoring_memcached_directory }}
+  register: monit_memcache_exist
+
+- name: Delete Memcached monitoring directory
+  file: path={{ monitoring_directory }}/{{ monitoring_memcached_directory }} state=absent
+  when: (monit_memcache_exist.stat.exists == True)
+
+- name: Outil de monitoring | Création du répertoire de dépôt pour monitoring memcached
+  file: path={{ monitoring_directory }}/{{ monitoring_memcached_directory }} state=directory owner={{ monitoring_user }} group={{ monitoring_group }}
+
+- name: Unarchive
+  unarchive: src=phpmemcacheadmin-master.tar.gz dest=/tmp copy=yes
+
+- name: Move to final directory
+  shell: mv /tmp/phpmemcacheadmin-master/* {{ monitoring_directory }}/{{ monitoring_memcached_directory }} 
+
+- name: Set group to apache on release directory
+  shell: "chown -R apache.apache {{ monitoring_memcached_directory }}"
+  args:
+    chdir: "{{ monitoring_directory }}/"
+
+- name: Outil de monitoring | Copy du fichier de configuration Memcached.php
+  template: src={{ item.src }} dest={{ monitoring_directory }}/{{ monitoring_memcached_directory }}/Config/{{ item.dest }}
+  with_items:
+    - { src: Memcache.php.j2,        dest: "Memcache.php" }
+
+- name: Delete temporary directory
+  file: path=/tmp/phpmemcacheadmin-master/ state=absent
+
+

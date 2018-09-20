@@ -1,0 +1,20 @@
+Listen {{ monitoring_port }}
+
+<VirtualHost *:{{ monitoring_port }}>
+    DocumentRoot {{ monitoring_directory }}
+    ServerName {{ public_fqdn }}
+
+    ProxyPassMatch ^/(.*\.php)$ fcgi://{{ php_fpm_pool_listen }}{{ monitoring_directory }}/$1
+
+
+    <Directory {{ monitoring_directory }}>
+        AllowOverride All
+        Options -Indexes +FollowSymLinks
+        Require all granted
+
+        DirectoryIndex index.html
+    </Directory>
+
+    ErrorLog "logs/monitoring-error_log"
+    CustomLog "logs/monitoring-access_log" combined
+</VirtualHost>

@@ -1,0 +1,4 @@
+monitoring_directory: /appli/monitoring/
+monitoring_user: apache
+monitoring_group: apache
+monitoring_port: 81

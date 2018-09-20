@@ -1,0 +1,35 @@
+---
+
+#- name: Create a user for deployment on servers that only allow calife (sudo su -)
+#  local_action: "{{ role_path }}/files/calife_only_handler.sh {{ inventory_hostname }}"
+#  when: use_calife|default(false)
+
+- include: repo_doit.yml
+  when: use_repo_doit|default(false)
+
+- include: mount.yml
+  when: remount_filesystems|default(true)
+
+- include: epel.yml
+  when: use_epel|default(true)
+
+- include: scl.yml
+  when: use_scl|default(true)
+
+- include: selinux.yml
+
+- include: timezone.yml
+
+- include: ntp.yml
+  when: time_sync|default(false)
+
+- name: Install common packages
+  yum: name={{ item }} state=present
+  with_items:
+    - bzip2
+    - unzip
+    - curl
+    - rsync
+    - unzip
+    - wget
+

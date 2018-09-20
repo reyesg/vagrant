@@ -1,0 +1,14 @@
+vm-dev ansible_connection=local
+
+[local:children]
+dev
+
+[dev:children]
+database
+front
+
+[database]
+vm-dev
+
+[front]
+vm-dev
